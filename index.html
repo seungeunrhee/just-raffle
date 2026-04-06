@@ -1349,6 +1349,30 @@ async function toggleScreenCapture() {
     recBtn.style.borderRadius = '50px';
     recBtn.innerHTML = '⏺ 화면 녹화';
 
+    // 녹화 종료 시 drawSection 안에 안내사항 3초간 표시 → 녹화본에 캡처됨
+    const drawSec = document.getElementById('drawSection');
+    const notice = document.createElement('div');
+    notice.style.cssText = `
+      margin-top: 16px;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, rgba(184,150,12,0.15), rgba(184,150,12,0.08));
+      border: 2px solid rgba(184,150,12,0.5);
+      border-left: 5px solid var(--gold);
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: var(--text);
+      line-height: 1.8;
+      text-align: center;
+      font-weight: 700;
+      animation: fadeIn 0.4s ease;
+    `;
+    notice.innerHTML = `
+      <div style="color:var(--gold); font-size:1rem; margin-bottom:6px;">⚠️ 당첨자 안내사항</div>
+      주문 취소 후 재구매 시, 해당 주문번호는 취소 처리되어<br>당첨 대상에서 제외됩니다.
+    `;
+    drawSec.appendChild(notice);
+    setTimeout(() => notice.remove(), 4000);
+
     if (mediaRecorder && mediaRecorder.state !== 'inactive') {
       mediaRecorder.stop();
       mediaRecorder.onstop = () => {
