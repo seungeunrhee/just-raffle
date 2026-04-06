@@ -1147,6 +1147,30 @@ function renderWinners() {
       <div class="winner-name">${w.name}</div>
     </div>`
   ).join('');
+
+  // 당첨 후 안내 문구 표시
+  let notice = document.getElementById('winnerNotice');
+  if (!notice) {
+    notice = document.createElement('div');
+    notice.id = 'winnerNotice';
+    notice.style.cssText = `
+      margin-top: 20px;
+      padding: 16px 20px;
+      background: linear-gradient(135deg, rgba(184,150,12,0.1), rgba(184,150,12,0.06));
+      border: 1px solid rgba(184,150,12,0.35);
+      border-left: 4px solid var(--gold);
+      border-radius: 12px;
+      font-size: 0.88rem;
+      color: var(--text);
+      line-height: 1.8;
+      text-align: left;
+    `;
+    notice.innerHTML = `
+      <div style="font-weight:900; color:var(--gold); margin-bottom:8px;">⚠️ 당첨자 안내사항</div>
+      주문 취소 후 재구매 시, 해당 주문번호는 취소 처리되어 당첨 대상에서 제외됩니다.
+    `;
+    sec.appendChild(notice);
+  }
 }
 
 function launchConfetti() {
