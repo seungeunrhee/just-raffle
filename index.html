@@ -711,7 +711,11 @@ body::before {
 
   <!-- 당첨자 목록 -->
   <div class="card" id="winnersSection" style="display:none;">
-    <div class="card-title"><span>🏆</span> 당첨자 목록 <span class="count-badge" id="winnerCountBadge">0명</span></div>
+    <div class="card-title">
+      <span>🏆</span> 당첨자 목록
+      <span class="count-badge" id="winnerCountBadge">0명</span>
+      <button class="btn-tool" onclick="captureWinners()" style="margin-left:auto; font-size:0.82rem; padding:6px 14px;">📸 당첨자 캡처</button>
+    </div>
     <div class="winners-grid" id="winnersGrid"></div>
   </div>
 </div>
@@ -1207,7 +1211,26 @@ function launchConfetti() {
   }
 }
 
-// ---- CAPTURE ----
+// 당첨자 목록만 캡처
+async function captureWinners() {
+  const el = document.getElementById('winnersSection');
+  if (!window.html2canvas) {
+    showToast('⏳ 캡처 모듈 로딩 중...');
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js');
+  }
+  showToast('📸 캡처 중...');
+  html2canvas(el, { backgroundColor: '#ffffff', scale: 2, useCORS: true, logging: false })
+    .then(canvas => {
+      canvas.toBlob(blob => {
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.download = `당첨자_${new Date().toLocaleDateString('ko')}.png`;
+        a.href = url; a.click();
+        URL.revokeObjectURL(url);
+        showToast('✅ 당첨자 목록 캡처 완료!');
+      });
+    });
+}
 async function captureScreen() {
   const el = document.querySelector('.container');
   if (!window.html2canvas) {
